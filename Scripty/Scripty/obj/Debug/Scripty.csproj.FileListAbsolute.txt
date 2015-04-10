@@ -1,0 +1,6 @@
+c:\users\freddy\documents\visual studio 2013\Projects\Scripty\Scripty\bin\Debug\Scripty.exe.config
+c:\users\freddy\documents\visual studio 2013\Projects\Scripty\Scripty\bin\Debug\Scripty.exe
+c:\users\freddy\documents\visual studio 2013\Projects\Scripty\Scripty\bin\Debug\Scripty.pdb
+c:\users\freddy\documents\visual studio 2013\Projects\Scripty\Scripty\obj\Debug\Scripty.csprojResolveAssemblyReference.cache
+c:\users\freddy\documents\visual studio 2013\Projects\Scripty\Scripty\obj\Debug\Scripty.exe
+c:\users\freddy\documents\visual studio 2013\Projects\Scripty\Scripty\obj\Debug\Scripty.pdb
