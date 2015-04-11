@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Scripty.Engine
 {
@@ -194,7 +195,8 @@ namespace Scripty.Engine
                 throw new NotAValidConfigException();
             }
             LoadCommands();
-            Macros = new Macro[1];
+            LoadMacros();
+            /*Macros = new Macro[1];
             Macros[0] = new Macro();
             Macros[0].Name = "message";
             Macros[0].Description = "Displays a textbox with custom text";
@@ -202,18 +204,17 @@ namespace Scripty.Engine
             Macros[0].Template[0] = "loadpointer 0x00 {0}";
             Macros[0].Template[1] = "callstd {1}";
             Macros[0].Parameters.Add(new Parameter(Parameter.ParameterType.TextPointer, "textpointer", "blub"));
-            Macros[0].Parameters.Add(new Parameter(Parameter.ParameterType.Byte, "boxtype", "blub"));
+            Macros[0].Parameters.Add(new Parameter(Parameter.ParameterType.Byte, "boxtype", "blub"));*/
         }
 
         /// <summary>
-        /// Loads the command configuration
+        /// Loads the command configurationblock
         /// </summary>
         private void LoadCommands()
         {
             XmlNodeList commands = root.SelectSingleNode("commands").ChildNodes;
             Commands = new Command[256];
-            foreach (XmlNode commandnode in commands)
-            {
+            foreach (XmlNode commandnode in commands) {
                 Command command;
                 XmlNode nodeid;
                 XmlNode nodename;
@@ -238,6 +239,41 @@ namespace Scripty.Engine
                 else { throw new NotAValidConfigException(); }
                 Commands[command.Id] = command;
             }
+        }
+
+        /// <summary>
+        /// Loads the macro configuration block
+        /// </summary>
+        private void LoadMacros()
+        {
+            XmlNodeList macros = root.SelectSingleNode("macros").ChildNodes;
+            List<Macro> macrolist = new List<Macro>();
+            foreach (XmlNode macronode in macros) {
+                Macro macro; 
+                XmlNode nodename;
+                XmlNode nodedescription;
+                XmlNode nodetemplate;
+                XmlNode nodeparams;
+                if (macronode.Name != "macro") {
+                    throw new NotAValidConfigException();
+                }
+                macro = new Macro();
+                nodename = macronode.SelectSingleNode("name");
+                nodedescription = macronode.SelectSingleNode("description");
+                nodetemplate = macronode.SelectSingleNode("template");
+                nodeparams = macronode.SelectSingleNode("params");
+                if (nodename != null && nodedescription != null && nodeparams != null) {
+                    string template = Regex.Replace(nodetemplate.InnerText, "\t", "");
+                    string[] templatearray = Regex.Split(template, "\r\n");
+                    macro.Name = nodename.InnerText;
+                    macro.Description = nodedescription.InnerText;
+                    //macro.Template = Regex.Replace(Regex.Replace(nodetemplate.InnerText, ("\t", ""), " ");
+                    macro.Template = templatearray;
+                    macro.Parameters = HandleParameterEntry(nodeparams.ChildNodes);
+                }
+                macrolist.Add(macro);
+            }
+            Macros = macrolist.ToArray();
         }
 
         /// <summary>

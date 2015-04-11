@@ -45,7 +45,7 @@
 			<name>msgbox</name>
 			<description>Displays a textbox</description>
 			<template>
-				loadpointer 0x300F14 {0}
+				loadpointer 0x00 {0}
 				callstd {1}
 			</template>
 			<params>
