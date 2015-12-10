@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scripty>
+	<commands>
+		<command>
+			<id>00</id>
+			<name>nop</name>
+			<description>Does nothing.</description>
+			<params></params>
+		</command>
+		<command>
+			<id>02</id>
+			<name>end</name>
+			<description>Terminates script execution.</description>
+			<params></params>
+		</command>
+		<command>
+			<id>09</id>
+			<name>callstd</name>
+			<description>Calls the standard function at index function.</description>
+			<params>
+				<byte>
+					<name>function</name>
+					<description>Index of the standard function to call.</description>
+				</byte>
+			</params>
+		</command>
+		<command>
+			<id>0F</id>
+			<name>loadpointer</name>
+			<description>Sets the specified script bank to value.</description>
+			<params>
+				<byte>
+					<name>bank</name>
+					<description>the bank to write the word to</description>
+				</byte>
+				<word>
+					<name>value</name>
+					<description>the value to write.</description>
+				</word>
+			</params>
+		</command>
+	</commands>
+	<macros>
+		<macro>
+			<name>msgbox</name>
+			<description>Displays a textbox</description>
+			<template>
+				loadpointer 0x00 {0}
+				callstd {1}
+			</template>
+			<params>
+				<text>
+					<name>Textoffset</name>
+					<description>The offset of the text to display</description>
+				</text>
+				<byte>
+					<name>Boxmode</name>
+					<description>The textbox mode to use.</description>
+				</byte>
+			</params>
+		</macro>
+	</macros>
+</scripty>
