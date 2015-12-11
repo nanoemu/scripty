@@ -163,7 +163,7 @@ namespace Scripty.Engine
     }
 
     /// <summary>
-    /// Maintains Scripty's configuration data
+    /// Maintains Scripty's configuration data, parsed from an XML file (scripty.xml)
     /// </summary>
     public sealed class Config
     {
