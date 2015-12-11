@@ -2,42 +2,45 @@
 <!--
   Source: http://www.sphericalice.com/romhacking/documents/script/index.html
   Param-Types:
-      [new] condition:    A conditen of a recently called comparsion
-      byte:               A 1-byte-value
+      condition:          A conditen of a recently called comparsion
+      byte:               A byte-value
       hword:              A 2-byte-value
       word:               A 4-byte-value
-      [new] bank:         A so-called script bank
-      [new] var:          A variable located in the player's save-file
-      [new] hwordvar:     Acts like a var. It will act like an hword if the given var doesn't exist
-      [new] flag:         A var which contains a flag-number or a flag-number
+      bank:               A so-called script bank
+      var:                A variable located in the player's save-file
+      hwordvar:           Acts like a var. It will act like an hword if the given var doesn't exist
+      [new] bytevar:      A byte-value or a variable containing a byte
+      flag:               A var which contains a flag-number or a flag-number
       
       code:               A pointer which points at another script.
-      [new] asm:          A pointer which points at an ASM-Code
+      asm:                A pointer which points at an ASM-Code
 -->
 <scripty>
-	<commands>
-		<command>
-			<id>00</id>
-			<name>nop</name>
-			<description>Does nothing.</description>
-			<params></params>
-		</command>
+  <commands>
+    <command>
+      <id>00</id>
+      <name>nop</name>
+      <description>Does nothing.</description>
+      <params></params>
+    </command>
     <command>
       <id>01</id>
       <name>nop1</name>
       <description>Does nothing.</description>
       <params></params>
     </command>
-		<command>
-			<id>02</id>
-			<name>end</name>
-			<description>Terminates script execution.</description>
-			<params></params>
-		</command>
+    <command>
+      <id>02</id>
+      <name>end</name>
+      <description>Terminates script execution.</description>
+      <params></params>
+    </command>
     <command>
       <id>03</id>
       <name>return</name>
-      <description>Jumps back to after the last-executed <see id="04">call</see> statement, and coninues script execution from there.</description>
+      <description>
+        Jumps back to after the last-executed <see id="04">call</see> statement, and coninues script execution from there.
+      </description>
       <params></params>
     </command>
     <command>
@@ -79,17 +82,17 @@
         </byte>
       </params>
     </command>
-		<command>
-			<id>09</id>
-			<name>callstd</name>
-			<description>Calls the standard function at index function.</description>
-			<params>
-				<byte>
-					<name>function</name>
-					<description>Index of the standard function to call.</description>
-				</byte>
-			</params>
-		</command>
+    <command>
+      <id>09</id>
+      <name>callstd</name>
+      <description>Calls the standard function at index function.</description>
+      <params>
+        <byte>
+          <name>function</name>
+          <description>Index of the standard function to call.</description>
+        </byte>
+      </params>
+    </command>
     <command>
       <id>0A</id>
       <name>gotostdif</name>
@@ -146,21 +149,21 @@
       </params>
     </command>
     <!-- originally this command's called "loadpointer" -->
-		<command>
+    <command>
       <id>0F</id>
-			<name>setbank</name>
-			<description>Sets the specified script bank to value.</description>
-			<params>
+      <name>setbank</name>
+      <description>Sets the specified script bank to value.</description>
+      <params>
         <bank>
           <name>destination</name>
           <description>The bank to write the word to.</description>
         </bank>
-				<word>
-					<name>value</name>
-					<description>The value to write.</description>
-				</word>
-			</params>
-		</command>
+        <word>
+          <name>value</name>
+          <description>The value to write.</description>
+        </word>
+      </params>
+    </command>
     <!-- This command's got the same name like 0F, !but the params aren't the same! -->
     <!-- originally this command's called "setbyte2" -->
     <command>
@@ -322,7 +325,9 @@
     <command>
       <id>1A</id>
       <name>trycopyvar</name>
-      <description>If source is not a variable, then this function acts like <see id="16">setvar</see>. Otherwise, it acts like <see id="19">copyvar</see>.</description>
+      <description>
+        If source is not a variable, then this function acts like <see id="16">setvar</see>. Otherwise, it acts like <see id="19">copyvar</see>.
+      </description>
       <params>
         <var>
           <name>destination</name>
@@ -715,28 +720,78 @@
         </hword>
       </params>
     </command>
+    <!-- needs to be researched -->
     <command>
-      
+      <id>37</id>
+      <name>fadeout</name>
+      <description>
+        Fades out the currently-playing song.
+
+        (I need to test this command to see it has any quirks... And what unit of measurement is used for speed? And does it accept a variable?)
+      </description>
+      <params>
+        <byte>
+          <name>speed</name>
+          <description>The amount of speed the song fades out.</description>
+        </byte>
+      </params>
     </command>
-	</commands>
-	<macros>
-		<macro>
-			<name>msgbox</name>
-			<description>Displays a textbox</description>
-			<template>
-				setbank 0x00 {0}
-				callstd {1}
-			</template>
-			<params>
-				<text>
-					<name>Textoffset</name>
-					<description>The offset of the text to display</description>
-				</text>
-				<byte>
-					<name>Boxmode</name>
-					<description>The textbox mode to use.</description>
-				</byte>
-			</params>
-		</macro>
-	</macros>
+    <!-- needs to be researched -->
+    <command>
+      <id>38</id>
+      <name>fadein</name>
+      <description>
+        Fades the currently-playing song back in.
+
+        (I need to test this command to see it has any quirks... And what unit of measurement is used for speed? And does it accept a variable?)
+      </description>
+      <params>
+        <byte>
+          <name>speed</name>
+          <description>The amount of speed the song fades in.</description>
+        </byte>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>39</id>
+      <name>warp</name>
+      <description>
+        Sends the player to Warp warp on Map bank.map. If the specified warp is 0xFF, then the player will instead be sent to (X, Y) on the map.
+
+        This command will also play Sappy song 0x0009, but only if the bytes at 0x02031DD8 and 0x0203ADFA are not equal to 0x00 and 0x02, respectively.
+
+        (Function terminates script execution?)
+      </description>
+      <params>
+        <byte>
+          <name>mapBank</name>
+          <description>The map-bank to warp to.</description>
+        </byte>
+        <byte>
+
+        </byte>
+      </params>
+    </command>
+  </commands>
+  <macros>
+    <macro>
+      <name>msgbox</name>
+      <description>Displays a textbox</description>
+      <template>
+        setbank 0x00 {0}
+        callstd {1}
+      </template>
+      <params>
+        <text>
+          <name>Textoffset</name>
+          <description>The offset of the text to display</description>
+        </text>
+        <byte>
+          <name>Boxmode</name>
+          <description>The textbox mode to use.</description>
+        </byte>
+      </params>
+    </macro>
+  </macros>
 </scripty>
