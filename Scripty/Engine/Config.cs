@@ -189,7 +189,7 @@ namespace Scripty.Engine
         public Config(string file)
         {
             XmlDocument doc = new XmlDocument();
-            doc.Load(file);
+            doc.Load(XmlReader.Create(file, new XmlReaderSettings { IgnoreComments = true }));
             root = doc.DocumentElement;
             if (root.Name != "scripty") {
                 throw new NotAValidConfigException();
@@ -212,7 +212,8 @@ namespace Scripty.Engine
                 XmlNode nodedescription;
                 XmlNode nodeparams;
                 byte id;
-                if (commandnode.Name != "command") {
+                else if (commandnode.Name != "command")
+                {
                     throw new NotAValidConfigException();
                 }
                 command = new Command();
