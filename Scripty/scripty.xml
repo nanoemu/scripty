@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Source: http://www.sphericalice.com/romhacking/documents/script/index.html
+  Source: http://www.sphericalice.com/romhacking/documents/script/index.html
+  Param-Types:
+      [new] condition:    A conditen of a recently called comparsion
+      byte:               A 1-byte-value
+      hword:              A 2-byte-value
+      word:               A 4-byte-value
+      [new] bank:         A so-called script bank
+      [new] var:          A variable located in the player's save-file
+      [new] hwordvar:     Acts like a var. It will act like an hword if the given var doesn't exist
+      [new] flag:         A var which contains a flag-number or a flag-number
+      
+      code:               A pointer which points at another script.
+      [new] asm:          A pointer which points at an ASM-Code
 -->
 <scripty>
 	<commands>
@@ -47,7 +59,12 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <id>05</id>
       <name>goto</name>
       <description>Jumps to destination and continues script execution from there.</description>
-      <params></params>
+      <params>
+        <code>
+          <name>destination</name>
+          <description>Offset of the script to call.</description>
+        </code>
+      </params>
     </command>
     <!-- ToDo http://www.sphericalice.com/romhacking/documents/script/index.html#c-06 -->
     <!-- ToDo http://www.sphericalice.com/romhacking/documents/script/index.html#c-07 -->
@@ -55,7 +72,12 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <id>08</id>
       <name>gotostd</name>
       <description>Jumps to the standard function at index function.</description>
-      <params></params>
+      <params>
+        <byte>
+          <name>function</name>
+          <description>Index of the standard function to call.</description>
+        </byte>
+      </params>
     </command>
 		<command>
 			<id>09</id>
@@ -73,10 +95,10 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <name>gotostdif</name>
       <description>If the result of the last comparison matches condition, jumps to the standard function at index function.</description>
       <params>
-        <byte>
+        <condition>
           <name>condition</name>
           <description>The last comparsion's condition.</description>
-        </byte>
+        </condition>
         <byte>
           <name>function</name>
           <description>Index of the standard function to call.</description>
@@ -88,16 +110,17 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <name>callstdif</name>
       <description>If the result of the last comparison matches condition, calls the standard function at index function.</description>
       <params>
-        <byte>
+        <condition>
           <name>condition</name>
           <description>The last comparsion's condition.</description>
-        </byte>
+        </condition>
         <byte>
           <name>function</name>
           <description>Index of the standard function to call.</description>
         </byte>
       </params>
     </command>
+    <!-- needs to be researched -->
     <command>
       <id>0C</id>
       <name>jumpram</name>
@@ -128,35 +151,37 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
 			<name>setbank</name>
 			<description>Sets the specified script bank to value.</description>
 			<params>
-				<byte>
-					<name>bank</name>
-					<description>The bank to write the word to.</description>
-				</byte>
+        <bank>
+          <name>destination</name>
+          <description>The bank to write the word to.</description>
+        </bank>
 				<word>
 					<name>value</name>
 					<description>The value to write.</description>
 				</word>
 			</params>
 		</command>
+    <!-- This command's got the same name like 0F, !but the params aren't the same! -->
+    <!-- originally this command's called "setbyte2" -->
     <command>
-      <!-- This command's got the same name like 0E, !but the paras aren't the same! -->
       <id>10</id>
-      <name>setbyte</name>
+      <name>setbank</name>
       <description>Sets the specified script bank to value.</description>
       <params>
-        <byte>
-          <name>bank</name>
+        <bank>
+          <name>destination</name>
           <description>The bank to write byte to.</description>
-        </byte>
+        </bank>
         <byte>
           <name>value</name>
           <description>The value to write.</description>
         </byte>
       </params>
     </command>
+    <!-- originally this command's called "writebytetooffset" -->
     <command>
       <id>11</id>
-      <name>writebytetooffset</name>
+      <name>writebyte</name>
       <description>Sets the byte at offset to value.</description>
       <params>
         <byte>
@@ -174,13 +199,13 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <name>loadbytefrompointer</name>
       <description>Copies the byte value at source into the specified script bank.</description>
       <params>
-        <byte>
-          <name>bank</name>
+        <bank>
+          <name>destination</name>
           <description>The bank to write the byte to.</description>
-        </byte>
+        </bank>
         <word>
           <name>source</name>
-          <description>Offset to read byte from.</description>
+          <description>Offset to read least-significant byte from.</description>
         </word>
       </params>
     </command>
@@ -190,10 +215,10 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <name>setfarbyte</name>
       <description>Not sure. Judging from XSE's description I think it takes the least-significant byte in bank source and writes it to destination.</description>
       <params>
-        <byte>
+        <bank>
           <name>source</name>
-          <description>Bank to read byte from.</description>
-        </byte>
+          <description>Bank to read least-significant byte from.</description>
+        </bank>
         <word>
           <name>destination</name>
           <description>Offset to write byte to.</description>
@@ -201,19 +226,20 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       </params>
     </command>
     <!-- originally this command's called "copyscriptbanks" -->
+    <!-- I would recommend "copy" as the command's name -->
     <command>
       <id>14</id>
       <name>copyscriptbank</name>
       <description>Copies the contents of bank source into bank destination.</description>
       <params>
-        <byte>
+        <bank>
           <name>destination</name>
           <description>Bank to write value to.</description>
-        </byte>
-        <byte>
+        </bank>
+        <bank>
           <name>source</name>
           <description>Bank to read value from.</description>
-        </byte>
+        </bank>
       </params>
     </command>
     <command>
@@ -236,25 +262,26 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <name>setvar</name>
       <description>Changes the value of destination to value.</description>
       <params>
-        <hword>
+        <var>
           <name>destination</name>
           <description>Variable to write value to.</description>
-        </hword>
+        </var>
         <hword>
           <name>value</name>
           <description>Value to write.</description>
         </hword>
       </params>
     </command>
+    <!-- needs to be researched -->
     <command>
       <id>17</id>
       <name>addvar</name>
       <description>Changes the value of destination by adding value to it. Overflow is not prevented (0xFFFF + 1 = 0x0000).</description>
       <params>
-        <hword>
+        <var>
           <name>destination</name>
           <description>Variable to add value to.</description>
-        </hword>
+        </var>
         <hword>
           <name>value</name>
           <description>Value to add.</description>
@@ -266,15 +293,14 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <name>subvar</name>
       <description>Changes the value of destination by subtracting value to it. Overflow is not prevented (0x0000 - 1 = 0xFFFF).</description>
       <params>
-        <hword>
+        <var>
           <name>destination</name>
           <description>Variable to subtract value from.</description>
-        </hword>
-        <!-- can be interpreted as a variable or an hword -->
-        <hword>
+        </var>
+        <hwordvar>
           <name>value</name>
           <description>Value to subtract.</description>
-        </hword>
+        </hwordvar>
       </params>
     </command>
     <command>
@@ -282,14 +308,14 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <name>copyvar</name>
       <description>Copies the value of source into destination-</description>
       <params>
-        <hword>
+        <var>
           <name>destination</name>
           <description>Variable to write source-value to.</description>
-        </hword>
-        <hword>
+        </var>
+        <var>
           <name>source</name>
           <description>Variable to read value from.</description>
-        </hword>
+        </var>
       </params>
     </command>
     <!-- originally this command's called "copyvarifnotzero" -->
@@ -298,65 +324,66 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
       <name>trycopyvar</name>
       <description>If source is not a variable, then this function acts like <see id="16">setvar</see>. Otherwise, it acts like <see id="19">copyvar</see>.</description>
       <params>
-        <hword>
+        <var>
           <name>destination</name>
           <description>Variable to write value to.</description>
-        </hword>
+        </var>
         <!-- can be interpreted as a variable or an hword -->
-        <hword>
+        <hwordvar>
           <name>value</name>
           <description>Value to copy.</description>
-        </hword>
+        </hwordvar>
       </params>
     </command>
+    <!-- I highly recommend to create a param-type called "bank" in order to create multiple commands called "compare" which got different params. -->
     <command>
       <id>1B</id>
       <name>comparebanks</name>
       <description>Compares the values of script banks x and y, after forcing the values to bytes.</description>
       <params>
-        <byte>
+        <bank>
           <name>x</name>
           <description>Bank to compare.</description>
-        </byte>
-        <byte>
+        </bank>
+        <bank>
           <name>y</name>
           <description>Bank to compare.</description>
-        </byte>
+        </bank>
       </params>
     </command>
-    <!-- I highly recommend to create a param-type called "bank" in order to create multiple commands called "compare" which got different params. -->
+    <!-- Could also be renamed to "compare" -->
     <command>
       <id>1C</id>
       <name>comparebanktobyte</name>
       <description>Compares the least-significant byte of the value of script bank x to a fixed byte value y.</description>
       <params>
-        <byte>
+        <bank>
           <name>x</name>
           <description>Bank to compare.</description>
-        </byte>
+        </bank>
         <byte>
           <name>y</name>
           <description>Byte to compare.</description>
         </byte>
       </params>
     </command>
-    <!-- I highly recommend to create a param-type called "bank" in order to create multiple commands called "compare" which got different params. -->
+    <!-- same thing here -->
     <command>
       <id>1D</id>
       <name>comparebanktofarbyte</name>
       <description>Compares the least-significant byte of the value of script bank x to the byte located at offset y.</description>
       <params>
-        <byte>
+        <bank>
           <name>x</name>
-          <description>Bank to compare.</description>
-        </byte>
+          <description>Bank to read least-significant byte from to compare.</description>
+        </bank>
         <word>
           <name>y</name>
           <description>Offset to read byte from to compare.</description>
         </word>
       </params>
     </command>
-    <!-- Could also be renamed to "compare" -->
+    <!-- ...and over... -->
     <command>
       <id>1E</id>
       <name>comparefarbytetobank</name>
@@ -366,13 +393,13 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
           <name>x</name>
           <description>Offset to read byte from to compare.</description>
         </word>
-        <byte>
+        <bank>
           <name>y</name>
           <description>Bank to read least-significant byte from to compare.</description>
-        </byte>
+        </bank>
       </params>
     </command>
-    <!-- same thing here -->
+    <!-- ...and over... -->
     <command>
       <id>1F</id>
       <name>comparefarbytetobyte</name>
@@ -388,6 +415,136 @@ Source: http://www.sphericalice.com/romhacking/documents/script/index.html
         </byte>
       </params>
     </command>
+    <!-- ...aaaaaaaaaaand over... -->
+    <command>
+      <id>20</id>
+      <name>comparefarbytes</name>
+      <description>Compares the byte located at offset x to the byte located at offset y.</description>
+      <params>
+        <word>
+          <name>x</name>
+          <description>Offset to read byte from to compare.</description>
+        </word>
+        <word>
+          <name>y</name>
+          <description>Offset to read byte from to compare.</description>
+        </word>
+      </params>
+    </command>
+    <!-- ...aaaaaaaaaaaaaaaaaaaand over... -->
+    <command>
+      <id>21</id>
+      <name>compare</name>
+      <description>Compares the value of x to a fixed word value (y).</description>
+      <params>
+        <var>
+          <name>x</name>
+          <description>Variable to compare.</description>
+        </var>
+        <hword>
+          <name>y</name>
+          <description>Value to compare.</description>
+        </hword>
+      </params>
+    </command>
+    <!-- ...and over again! -->
+    <command>
+      <id>22</id>
+      <name>comparevars</name>
+      <description>Compares the value of x to the value of y.</description>
+      <params>
+        <var>
+          <name>x</name>
+          <description>Variable to compare.</description>
+        </var>
+        <var>
+          <name>y</name>
+          <description>Variable to compare.</description>
+        </var>
+      </params>
+    </command>
+    <!-- originally this command's called "callasm" -->
+    <command>
+      <id>23</id>
+      <name>asm</name>
+      <description>Calls the ASM routine stored at code. Script execution is blocked until the ASM returns (bx lr, mov pc, lr, etc.). Remember to add 1 to the offset when calling THUMB code.</description>
+      <params>
+        <asm>
+          <name>code</name>
+          <description>The pointer which points at the asm-code</description>
+        </asm>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>24</id>
+      <name>cmd24</name>
+      <description>
+        Replaces a pointer in the script engine RAM with asm_pointer.
+
+        (The pointer points to a THUMB routine... What effect does replacing it have?)
+      </description>
+      <params>
+        <asm>
+          <name>asm_pointer</name>
+          <description>A pointer which points at an asm-code.</description>
+        </asm>
+      </params>
+    </command>
+    <command>
+      <id>25</id>
+      <name>special</name>
+      <description>
+        Calls a special function; that is, a piece of ASM code designed for use by scripts and listed in a table of pointers.
+
+        The special table is located at 0x0815FD60.
+      </description>
+      <params>
+        <hword>
+          <name>function</name>
+          <description>Index of the special function to call.</description>
+        </hword>
+      </params>
+    </command>
+    <!-- could also be renamed to "special" -->
+    <command>
+      <id>26</id>
+      <name>special2</name>
+      <description>Calls a special function. That function's output (if any) will be written to the variable you specify.</description>
+      <params>
+        <var>
+          <name>output</name>
+          <description>The variable to which the special function's output will be written.</description>
+        </var>
+        <hword>
+          <name>function</name>
+          <description>Index of the special function to call.</description>
+        </hword>
+      </params>
+    </command>
+    <command>
+      <id>27</id>
+      <name>waitstate</name>
+      <description>Blocks script execution until a command or ASM code manually unblocks it. Generally used with specific commands and specials. If this command runs, and a subsequent command or piece of ASM does not unblock state, the script will remain blocked indefinitely (essentially a hang).</description>
+      <params></params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>28</id>
+      <name>pause</name>
+      <description>
+        Blocks script execution for time (frames? milliseconds?).
+
+        A value of 0x0010 represents the amount of time it takes for a walking NPC to move one tile (i.e. dec 16 pixels).
+      </description>
+      <params>
+        <hword>
+          <name>time</name>
+          <description>The time to wait.</description>
+        </hword>
+      </params>
+    </command>
+    
 	</commands>
 	<macros>
 		<macro>
