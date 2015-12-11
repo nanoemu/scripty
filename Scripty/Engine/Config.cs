@@ -212,7 +212,7 @@ namespace Scripty.Engine
                 XmlNode nodedescription;
                 XmlNode nodeparams;
                 byte id;
-                else if (commandnode.Name != "command")
+                if (commandnode.Name != "command")
                 {
                     throw new NotAValidConfigException();
                 }
