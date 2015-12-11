@@ -544,7 +544,180 @@
         </hword>
       </params>
     </command>
-    
+    <command>
+      <id>29</id>
+      <name>setflag</name>
+      <description>Sets x to true</description>
+      <params>
+        <flag>
+          <name>x</name>
+          <description>Flag to set.</description>
+        </flag>
+      </params>
+    </command>
+    <!-- originally this command's called "clearflag" -->
+    <command>
+      <id>2A</id>
+      <name>unsetflag</name>
+      <description>Sets x to false.</description>
+      <params>
+        <flag>
+          <name>x</name>
+          <description>Flag to unset.</description>
+        </flag>
+      </params>
+    </command>
+    <command>
+      <id>2B</id>
+      <name>checkflag</name>
+      <description>Checks if x is true.</description>
+      <params>
+        <flag>
+          <name>x</name>
+          <description>Flag to check.</description>
+        </flag>
+      </params>
+    </command>
+    <!-- needs to be researched in R/S/S -->
+    <command>
+      <id>2C</id>
+      <name>cmd2c</name>
+      <description>In FireRed, this command is a nop.</description>
+      <params></params>
+    </command>
+    <!-- needs to be researched in R/S/S -->
+    <command>
+      <id>2D</id>
+      <name>chekdailyflags</name>
+      <description>Unknown</description>
+      <params></params>
+    </command>
+    <!-- needs to be researched in R/S/S-->
+    <command>
+      <id>2E</id>
+      <name>resetvars</name>
+      <description>Resets the values of variables 0x8000, 0x8001, and 0x8002. Related to RTC in RSE?</description>
+      <params></params>
+    </command>
+    <command>
+      <id>2F</id>
+      <name>sound</name>
+      <description>
+        Plays the specified (soundNumber) sound. Only one sound may play at a time, with newer ones interrupting older ones.
+
+        If you specify sound 0x0000, then all music will be muted. If you specify the number of a non-existent sound, no new sound will be played, and currently-playing sounds will not be interrupted. A comprehensive list of sound numbers may be found on <see href="http://www.pokecommunity.com/showpost.php?p=5610866&amp;postcount=3">PokeCommunity</see>.
+
+        Note that when using older versions of VisualBoyAdvance, the sound channel used for this command (and, sometimes, in music) will be completely muted after loading from a savestate.
+      </description>
+      <params>
+        <hword>
+          <name>soundNumber</name>
+          <description>The number of the sound to play.</description>
+        </hword>
+      </params>
+    </command>
+    <!--
+      originally this command's called "checksound"
+      needs to be researched a bit
+    -->
+    <command>
+      <id>30</id>
+      <name>waitsound</name>
+      <description>
+        Blocks script execution until the currently-playing <see id="2F">sound</see> finishes playing.
+
+        (Does this also block until cries finish playing? The manner in which it's used by default scripts suggests that it might.)
+      </description>
+      <params></params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>31</id>
+      <name>fanfare</name>
+      <description>
+        Plays the specified (fanfareNumber) fanfare.
+
+        (Is it limited to one fanfare at a time, like sound?)
+      </description>
+      <params>
+        <hwordvar>
+          <name>fanfareNumber</name>
+          <description>The number of the fanfare to play.</description>
+        </hwordvar>
+      </params>
+    </command>
+    <command>
+      <id>32</id>
+      <name>waitfanfare</name>
+      <description>Blocks script execution until all currently-playing fanfares finish.</description>
+      <params></params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>33</id>
+      <name>playsong</name>
+      <description>
+        Plays the specified (songNumber) song. The byte is apparently supposed to be 0x00.
+
+        (I need to test this command to see it has any quirks... And does it accept a variable?)
+      </description>
+      <params>
+        <hword>
+          <name>songNumber</name>
+          <description>The number of the song to play.</description>
+        </hword>
+        <byte>
+          <name>unknown</name>
+          <description>unknown</description>
+        </byte>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>34</id>
+      <name>playsong2</name>
+      <description>
+        Plays the specified (songNumber) song.
+
+        (I need to test this command to see it has any quirks... Among other things, it's failed to work for me in situations where playsong has worked. And does it accept a variable?)
+      </description>
+      <params>
+        <hword>
+          <name>songNumber</name>
+          <description>The number of the song to play.</description>
+        </hword>
+      </params>
+    </command>
+    <!-- could also be renamed to "fade" -->
+    <command>
+      <id>35</id>
+      <name>fadedefault</name>
+      <description>
+        Crossfades the currently-playing song into the map's default song.
+
+        (I need to test this command to see it has any quirks...)
+      </description>
+      <params></params>
+    </command>
+    <!-- could also be renamed to "fade" -->
+    <command>
+      <id>36</id>
+      <name>fadesong</name>
+      <description>
+        Crossfades the currently-playng song into the specified (songNumber) song.
+
+        (I need to test this command to see it has any quirks... And does it accept a variable?)
+      </description>
+      <params>
+        <hword>
+          <name>songNumber</name>
+          <description>The number of the song to play.</description>
+        </hword>
+      </params>
+    </command>
+    <command>
+      
+    </command>
 	</commands>
 	<macros>
 		<macro>
