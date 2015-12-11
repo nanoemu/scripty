@@ -6,8 +6,14 @@ using Gameboy32;
 
 namespace Scripty.Engine
 {
+    /// <summary>
+    /// Stores information about data/code that is refered to by script commands
+    /// </summary>
     public sealed class Reference
     {
+        /// <summary>
+        /// Enumeration of the possible types of references
+        /// </summary>
         public enum ReferenceType
         {
             Ignore,
@@ -17,12 +23,27 @@ namespace Scripty.Engine
             Market
         }
 
+        /// <summary>
+        /// Location of the data/code refered to
+        /// </summary>
         public uint Offset { get; set; }
+
+        /// <summary>
+        /// The type of reference. <see cref="ReferenceType"/>
+        /// </summary>
         public ReferenceType Type { get; set; }
 
+        /// <summary>
+        /// Creates a new Reference object
+        /// </summary>
         public Reference()
         { }
 
+        /// <summary>
+        /// Creates a new Reference object with predefined data
+        /// </summary>
+        /// <param name="offset">The offset refered to</param>
+        /// <param name="type">The kind of data refered to</param>
         public Reference(uint offset, ReferenceType type)
         {
             Offset = offset;
@@ -30,18 +51,37 @@ namespace Scripty.Engine
         }
     }
 
+    /// <summary>
+    /// Class capable of decompiling scipts from a given rom.
+    /// </summary>
     public sealed class Decompiler
     {
-
+        /// <summary>
+        /// Stores the given rom <seealso cref="Rom"/>
+        /// </summary>
         private Rom rom;
+
+        /// <summary>
+        /// Stores the given configuration file <seealso cref="Config"/>
+        /// </summary>
         private Config config;
 
+        /// <summary>
+        /// Creates a new instance of the Decompiler.
+        /// </summary>
+        /// <param name="rom">An object giving access to the rom <seealso cref="Rom"/></param>
+        /// <param name="config"></param>
         public Decompiler(Rom rom, Config config)
         {
             this.rom = rom;
             this.config = config;
         }
 
+        /// <summary>
+        /// Decompiles the script located at the given location.
+        /// </summary>
+        /// <param name="offset">The offset of the script</param>
+        /// <returns>A list of script lines</returns>
         public List<string> Decompile(uint offset)
         {
             List<string> code = new List<string>();
