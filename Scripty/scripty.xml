@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+Source: http://www.sphericalice.com/romhacking/documents/script/index.html
+-->
 <scripty>
 	<commands>
 		<command>
@@ -7,12 +10,53 @@
 			<description>Does nothing.</description>
 			<params></params>
 		</command>
+    <command>
+      <id>01</id>
+      <name>nop1</name>
+      <description>Does nothing.</description>
+      <params></params>
+    </command>
 		<command>
 			<id>02</id>
 			<name>end</name>
 			<description>Terminates script execution.</description>
 			<params></params>
 		</command>
+    <command>
+      <id>03</id>
+      <name>return</name>
+      <description>Jumps back to after the last-executed <see id="04">call</see> statement, and coninues script execution from there.</description>
+      <params></params>
+    </command>
+    <command>
+      <id>04</id>
+      <name>call</name>
+      <description>
+        Jumps to destination and continues script execution from there. The location of the calling script is remembered and can be <see id="03">return</see>ed to later.
+
+        The maximum script depth (that is, the maximum nested calls you can make) is 20. When this limit is reached, the game starts treating call as <see id="05">goto</see>.
+      </description>
+      <params>
+        <code>
+          <name>destination</name>
+          <description>Offset of the script to call.</description>
+        </code>
+      </params>
+    </command>
+    <command>
+      <id>05</id>
+      <name>goto</name>
+      <description>Jumps to destination and continues script execution from there.</description>
+      <params></params>
+    </command>
+    <!-- ToDo http://www.sphericalice.com/romhacking/documents/script/index.html#c-06 -->
+    <!-- ToDo http://www.sphericalice.com/romhacking/documents/script/index.html#c-07 -->
+    <command>
+      <id>08</id>
+      <name>gotostd</name>
+      <description>Jumps to the standard function at index function.</description>
+      <params></params>
+    </command>
 		<command>
 			<id>09</id>
 			<name>callstd</name>
@@ -24,28 +68,333 @@
 				</byte>
 			</params>
 		</command>
+    <command>
+      <id>0A</id>
+      <name>gotostdif</name>
+      <description>If the result of the last comparison matches condition, jumps to the standard function at index function.</description>
+      <params>
+        <byte>
+          <name>condition</name>
+          <description>The last comparsion's condition.</description>
+        </byte>
+        <byte>
+          <name>function</name>
+          <description>Index of the standard function to call.</description>
+        </byte>
+      </params>
+    </command>
+    <command>
+      <id>0B</id>
+      <name>callstdif</name>
+      <description>If the result of the last comparison matches condition, calls the standard function at index function.</description>
+      <params>
+        <byte>
+          <name>condition</name>
+          <description>The last comparsion's condition.</description>
+        </byte>
+        <byte>
+          <name>function</name>
+          <description>Index of the standard function to call.</description>
+        </byte>
+      </params>
+    </command>
+    <command>
+      <id>0C</id>
+      <name>jumpram</name>
+      <description>Executes a script stored in a default RAM location.</description>
+      <params></params>
+    </command>
+    <command>
+      <id>0D</id>
+      <name>killscript</name>
+      <description>Terminates script execution and "resets the script RAM".</description>
+      <params></params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>0E</id>
+      <name>setbyte</name>
+      <description>Pads the specified value to a dword, and then writes that dword to a predefined address (0x0203AAA8).</description>
+      <params>
+        <byte>
+          <name>value</name>
+          <description>The value to write.</description>
+        </byte>
+      </params>
+    </command>
+    <!-- originally this command's called "loadpointer" -->
 		<command>
-			<id>0F</id>
-			<name>loadpointer</name>
+      <id>0F</id>
+			<name>setbank</name>
 			<description>Sets the specified script bank to value.</description>
 			<params>
 				<byte>
 					<name>bank</name>
-					<description>the bank to write the word to</description>
+					<description>The bank to write the word to.</description>
 				</byte>
 				<word>
 					<name>value</name>
-					<description>the value to write.</description>
+					<description>The value to write.</description>
 				</word>
 			</params>
 		</command>
+    <command>
+      <!-- This command's got the same name like 0E, !but the paras aren't the same! -->
+      <id>10</id>
+      <name>setbyte</name>
+      <description>Sets the specified script bank to value.</description>
+      <params>
+        <byte>
+          <name>bank</name>
+          <description>The bank to write byte to.</description>
+        </byte>
+        <byte>
+          <name>value</name>
+          <description>The value to write.</description>
+        </byte>
+      </params>
+    </command>
+    <command>
+      <id>11</id>
+      <name>writebytetooffset</name>
+      <description>Sets the byte at offset to value.</description>
+      <params>
+        <byte>
+          <name>value</name>
+          <description>The value to write.</description>
+        </byte>
+        <word>
+          <name>offset</name>
+          <description>The offset to write byte to.</description>
+        </word>
+      </params>
+    </command>
+    <command>
+      <id>12</id>
+      <name>loadbytefrompointer</name>
+      <description>Copies the byte value at source into the specified script bank.</description>
+      <params>
+        <byte>
+          <name>bank</name>
+          <description>The bank to write the byte to.</description>
+        </byte>
+        <word>
+          <name>source</name>
+          <description>Offset to read byte from.</description>
+        </word>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>13</id>
+      <name>setfarbyte</name>
+      <description>Not sure. Judging from XSE's description I think it takes the least-significant byte in bank source and writes it to destination.</description>
+      <params>
+        <byte>
+          <name>source</name>
+          <description>Bank to read byte from.</description>
+        </byte>
+        <word>
+          <name>destination</name>
+          <description>Offset to write byte to.</description>
+        </word>
+      </params>
+    </command>
+    <!-- originally this command's called "copyscriptbanks" -->
+    <command>
+      <id>14</id>
+      <name>copyscriptbank</name>
+      <description>Copies the contents of bank source into bank destination.</description>
+      <params>
+        <byte>
+          <name>destination</name>
+          <description>Bank to write value to.</description>
+        </byte>
+        <byte>
+          <name>source</name>
+          <description>Bank to read value from.</description>
+        </byte>
+      </params>
+    </command>
+    <command>
+      <id>15</id>
+      <name>copybyte</name>
+      <description>Copies the byte at source to destination.</description>
+      <params>
+        <word>
+          <name>destination</name>
+          <description>Offset to write byte to.</description>
+        </word>
+        <word>
+          <name>source</name>
+          <description>Offset to read byte from.</description>
+        </word>
+      </params>
+    </command>
+    <command>
+      <id>16</id>
+      <name>setvar</name>
+      <description>Changes the value of destination to value.</description>
+      <params>
+        <hword>
+          <name>destination</name>
+          <description>Variable to write value to.</description>
+        </hword>
+        <hword>
+          <name>value</name>
+          <description>Value to write.</description>
+        </hword>
+      </params>
+    </command>
+    <command>
+      <id>17</id>
+      <name>addvar</name>
+      <description>Changes the value of destination by adding value to it. Overflow is not prevented (0xFFFF + 1 = 0x0000).</description>
+      <params>
+        <hword>
+          <name>destination</name>
+          <description>Variable to add value to.</description>
+        </hword>
+        <hword>
+          <name>value</name>
+          <description>Value to add.</description>
+        </hword>
+      </params>
+    </command>
+    <command>
+      <id>18</id>
+      <name>subvar</name>
+      <description>Changes the value of destination by subtracting value to it. Overflow is not prevented (0x0000 - 1 = 0xFFFF).</description>
+      <params>
+        <hword>
+          <name>destination</name>
+          <description>Variable to subtract value from.</description>
+        </hword>
+        <!-- can be interpreted as a variable or an hword -->
+        <hword>
+          <name>value</name>
+          <description>Value to subtract.</description>
+        </hword>
+      </params>
+    </command>
+    <command>
+      <id>19</id>
+      <name>copyvar</name>
+      <description>Copies the value of source into destination-</description>
+      <params>
+        <hword>
+          <name>destination</name>
+          <description>Variable to write source-value to.</description>
+        </hword>
+        <hword>
+          <name>source</name>
+          <description>Variable to read value from.</description>
+        </hword>
+      </params>
+    </command>
+    <!-- originally this command's called "copyvarifnotzero" -->
+    <command>
+      <id>1A</id>
+      <name>trycopyvar</name>
+      <description>If source is not a variable, then this function acts like <see id="16">setvar</see>. Otherwise, it acts like <see id="19">copyvar</see>.</description>
+      <params>
+        <hword>
+          <name>destination</name>
+          <description>Variable to write value to.</description>
+        </hword>
+        <!-- can be interpreted as a variable or an hword -->
+        <hword>
+          <name>value</name>
+          <description>Value to copy.</description>
+        </hword>
+      </params>
+    </command>
+    <command>
+      <id>1B</id>
+      <name>comparebanks</name>
+      <description>Compares the values of script banks x and y, after forcing the values to bytes.</description>
+      <params>
+        <byte>
+          <name>x</name>
+          <description>Bank to compare.</description>
+        </byte>
+        <byte>
+          <name>y</name>
+          <description>Bank to compare.</description>
+        </byte>
+      </params>
+    </command>
+    <!-- I highly recommend to create a param-type called "bank" in order to create multiple commands called "compare" which got different params. -->
+    <command>
+      <id>1C</id>
+      <name>comparebanktobyte</name>
+      <description>Compares the least-significant byte of the value of script bank x to a fixed byte value y.</description>
+      <params>
+        <byte>
+          <name>x</name>
+          <description>Bank to compare.</description>
+        </byte>
+        <byte>
+          <name>y</name>
+          <description>Byte to compare.</description>
+        </byte>
+      </params>
+    </command>
+    <!-- I highly recommend to create a param-type called "bank" in order to create multiple commands called "compare" which got different params. -->
+    <command>
+      <id>1D</id>
+      <name>comparebanktofarbyte</name>
+      <description>Compares the least-significant byte of the value of script bank x to the byte located at offset y.</description>
+      <params>
+        <byte>
+          <name>x</name>
+          <description>Bank to compare.</description>
+        </byte>
+        <word>
+          <name>y</name>
+          <description>Offset to read byte from to compare.</description>
+        </word>
+      </params>
+    </command>
+    <!-- Could also be renamed to "compare" -->
+    <command>
+      <id>1E</id>
+      <name>comparefarbytetobank</name>
+      <description>Compares the byte located at offset x to the least-significant byte of the value of script bank y.</description>
+      <params>
+        <word>
+          <name>x</name>
+          <description>Offset to read byte from to compare.</description>
+        </word>
+        <byte>
+          <name>y</name>
+          <description>Bank to read least-significant byte from to compare.</description>
+        </byte>
+      </params>
+    </command>
+    <!-- same thing here -->
+    <command>
+      <id>1F</id>
+      <name>comparefarbytetobyte</name>
+      <description>Compares the byte located at offset x to a fixed byte value (y).</description>
+      <params>
+        <word>
+          <name>x</name>
+          <description>Offset to read byte from to compare.</description>
+        </word>
+        <byte>
+          <name>y</name>
+          <description>Byte to compare.</description>
+        </byte>
+      </params>
+    </command>
 	</commands>
 	<macros>
 		<macro>
 			<name>msgbox</name>
 			<description>Displays a textbox</description>
 			<template>
-				loadpointer 0x00 {0}
+				setbank 0x00 {0}
 				callstd {1}
 			</template>
 			<params>

@@ -201,7 +201,7 @@ namespace Scripty.Engine
             Macros[0].Name = "message";
             Macros[0].Description = "Displays a textbox with custom text";
             Macros[0].Template = new string[2];
-            Macros[0].Template[0] = "loadpointer 0x00 {0}";
+            Macros[0].Template[0] = "setbank 0x00 {0}";
             Macros[0].Template[1] = "callstd {1}";
             Macros[0].Parameters.Add(new Parameter(Parameter.ParameterType.TextPointer, "textpointer", "blub"));
             Macros[0].Parameters.Add(new Parameter(Parameter.ParameterType.Byte, "boxtype", "blub"));*/
