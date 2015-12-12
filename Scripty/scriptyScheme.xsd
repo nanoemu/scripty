@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <xs:complexType name="default" abstract="true" mixed="true">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="description">
+        <xs:complexType mixed="true">
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" name="see">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute name="id" use="optional" />
+                    <xs:attribute name="href" use="optional" />
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="params">
+    <xs:complexType>
+      <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:choice>
+          <xs:element name="condition"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="byte"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="hword"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="word"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="bank"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="var"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="hwordvar"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="bytevar"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="flag"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="code"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="asm"  minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="text" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="default" />
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="scripty">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="commands">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="command">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="id" />
+                    <xs:element name="name" type="xs:string" />
+                    <xs:element name="description">
+                      <xs:complexType mixed="true">
+                        <xs:sequence>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="see">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute name="id" use="optional" />
+                                  <xs:attribute name="href" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" maxOccurs="unbounded" ref="params" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="macros">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="macro">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="name" type="xs:string" />
+                    <xs:element name="description">
+                      <xs:complexType mixed="true">
+                        <xs:sequence>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="see">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute name="id" use="optional" />
+                                  <xs:attribute name="href" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="template" type="xs:string" />
+                    <xs:element minOccurs="0" maxOccurs="unbounded" ref="params" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

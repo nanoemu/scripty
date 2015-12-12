@@ -290,7 +290,7 @@ namespace Scripty.Engine
                     case "text": parameter.Type = Parameter.ParameterType.TextPointer; break;
                     case "movement": parameter.Type = Parameter.ParameterType.MovementPointer; break;
                     case "market": parameter.Type = Parameter.ParameterType.MarketPointer; break;
-                    default: throw new NotAValidConfigException();
+                    default: break; //throw new NotAValidConfigException();
                 }
                 if (nodename != null && nodedescription != null) {
                     parameter.Name = nodename.InnerText;

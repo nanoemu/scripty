@@ -15,7 +15,7 @@
       code:               A pointer which points at another script.
       asm:                A pointer which points at an ASM-Code
 -->
-<scripty>
+<scripty xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="scriptyScheme.xsd">
   <commands>
     <command>
       <id>00</id>
@@ -757,7 +757,7 @@
       <id>39</id>
       <name>warp</name>
       <description>
-        Sends the player to Warp warp on Map bank.map. If the specified warp is 0xFF, then the player will instead be sent to (X, Y) on the map.
+        Sends the player to Warp warp on Map bankNumber.mapNumber. If the specified warp is 0xFF, then the player will instead be sent to (X, Y) on the map.
 
         This command will also play Sappy song 0x0009, but only if the bytes at 0x02031DD8 and 0x0203ADFA are not equal to 0x00 and 0x02, respectively.
 
@@ -765,12 +765,293 @@
       </description>
       <params>
         <byte>
-          <name>mapBank</name>
-          <description>The map-bank to warp to.</description>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
         </byte>
         <byte>
-          
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
         </byte>
+        <byte>
+          <name>warpNumber</name>
+          <description>The warp-number to warp to.</description>
+        </byte>
+        <bytevar>
+          <name>X</name>
+          <description>The X-coordinate.</description>
+        </bytevar>
+        <bytevar>
+          <name>Y</name>
+          <description>The Y-coordinate.</description>
+        </bytevar>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>3A</id>
+      <name>warpmuted</name>
+      <description>
+        Clone of warp that does not play a sound effect.
+      </description>
+      <params>
+        <byte>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>warpNumber</name>
+          <description>The warp-number to warp to.</description>
+        </byte>
+        <bytevar>
+          <name>X</name>
+          <description>The X-coordinate.</description>
+        </bytevar>
+        <bytevar>
+          <name>Y</name>
+          <description>The Y-coordinate.</description>
+        </bytevar>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>3B</id>
+      <name>warpwalk</name>
+      <description>
+        Clone of warp that uses "a walking effect".
+
+        (Any other differences?)
+      </description>
+      <params>
+        <byte>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>warpNumber</name>
+          <description>The warp-number to warp to.</description>
+        </byte>
+        <bytevar>
+          <name>X</name>
+          <description>The X-coordinate.</description>
+        </bytevar>
+        <bytevar>
+          <name>Y</name>
+          <description>The Y-coordinate.</description>
+        </bytevar>
+      </params>
+    </command>
+    <!--
+      originally this command's called "warphole"
+      needs to be researched
+    -->
+    <command>
+      <id>3C</id>
+      <name>fall</name>
+      <description>
+        Warps the player to another map using a hole animation.
+
+        Warps to the same X,Y co-ords as the player's when activated.
+      </description>
+      <params>
+        <byte>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
+        </byte>
+      </params>
+    </command>
+    <!--
+      originally this command's called "warpteleport"
+      needs to be researched
+    -->
+    <command>
+      <id>3D</id>
+      <name>teleport</name>
+      <description>
+        Clone of warp that uses a teleport effect. It is apparently <see href="http://www.pokecommunity.com/showpost.php?p=4128468&amp;postcount=18">only used in R/S/E</see>.
+
+        (Any other differences?)
+      </description>
+      <params>
+        <byte>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>warpNumber</name>
+          <description>The warp-number to warp to.</description>
+        </byte>
+        <bytevar>
+          <name>X</name>
+          <description>The X-coordinate.</description>
+        </bytevar>
+        <bytevar>
+          <name>Y</name>
+          <description>The Y-coordinate.</description>
+        </bytevar>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>3E</id>
+      <name>warp2</name>
+      <description>
+        Clone of warp. Used by an (unused?) Safari Zone script to return the player to the gatehouse and end the Safari Game.
+
+        The only difference between this and warp/warpmuted are that those two commands write 01 01 00 to 0x02031DD4 when they finish, but this command does not. I don't yet know what this difference means.
+      </description>
+      <params>
+        <byte>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>warpNumber</name>
+          <description>The warp-number to warp to.</description>
+        </byte>
+        <bytevar>
+          <name>X</name>
+          <description>The X-coordinate.</description>
+        </bytevar>
+        <bytevar>
+          <name>Y</name>
+          <description>The Y-coordinate.</description>
+        </bytevar>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>3F</id>
+      <name>setwarpplace</name>
+      <description>
+        Sets a default warp place. If a warp tries to send the player to Warp 127 on Map 127.127, they will instead be sent here. Useful when a map has warps that need to go to script-controlled locations (i.e. elevators).
+
+        (Does this accept variables for X and Y?)
+      </description>
+      <params>
+        <byte>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>warpNumber</name>
+          <description>The warp-number to warp to.</description>
+        </byte>
+        <hword>
+          <name>X</name>
+          <description>The X-coordinate.</description>
+        </hword>
+        <hword>
+          <name>Y</name>
+          <description>The Y-coordinate.</description>
+        </hword>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>40</id>
+      <name>warp3</name>
+      <description>
+        Clone of warp2, except that this writes data to different offsets...
+
+        With normal warp commands, the stats for the map being entered replace data starting at 0x02031DBC (RAM: current map)... But this warp command instead writes to 0x02031DC4.
+
+        (With that in mind, could this have been used internally for DIVE?)
+      </description>
+      <params>
+        <byte>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>warpNumber</name>
+          <description>The warp-number to warp to.</description>
+        </byte>
+        <bytevar>
+          <name>X</name>
+          <description>The X-coordinate.</description>
+        </bytevar>
+        <bytevar>
+          <name>Y</name>
+          <description>The Y-coordinate.</description>
+        </bytevar>
+      </params>
+    </command>
+    <!-- needs to be researched -->
+    <command>
+      <id>41</id>
+      <name>warp4</name>
+      <description>
+        Clone of warp3, except that this writes data to different offsets...
+
+        With normal warp commands, the stats for the map being entered replace data starting at 0x02031DBC (RAM: current map)... But this warp command instead writes to 0x02031DCC.
+
+        (With that in mind, could this have been used internally for DIVE?)
+      </description>
+      <params>
+        <byte>
+          <name>mapBankNumber</name>
+          <description>The mapbank-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>mapNumber</name>
+          <description>The map-number to warp to.</description>
+        </byte>
+        <byte>
+          <name>warpNumber</name>
+          <description>The warp-number to warp to.</description>
+        </byte>
+        <bytevar>
+          <name>X</name>
+          <description>The X-coordinate.</description>
+        </bytevar>
+        <bytevar>
+          <name>Y</name>
+          <description>The Y-coordinate.</description>
+        </bytevar>
+      </params>
+    </command>
+    <!-- originally this command's called "getplayerposition" but it's f**king obvious whose position you'll get -->
+    <command>
+      <id>42</id>
+      <name>getposition</name>
+      <description>Retrieves the player's zero-based X- and Y-coordinates in the map, and stores them in the specified variables.</description>
+      <params>
+        <var>
+          <name>X</name>
+          <description>The variable to save the X-coordinate to.</description>
+        </var>
+        <var>
+          <name>Y</name>
+          <description>The variable to save the Y-coordinate to.</description>
+        </var>
       </params>
     </command>
   </commands>
